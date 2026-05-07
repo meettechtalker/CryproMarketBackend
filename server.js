@@ -7,7 +7,7 @@ const axios = require('axios');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -40,16 +40,16 @@ app.get('/api/crypto', async (req, res) => {
     });
 
     const data = response.data.data;
-    
+
     // Get the first key from the data object
     const coinKey = Object.keys(data)[0];
-    
+
     if (!coinKey) {
-       return res.status(404).json({ error: 'Coin not found' });
+      return res.status(404).json({ error: 'Coin not found' });
     }
 
     const coinInfo = data[coinKey];
-    
+
     // Process and return only required fields
     const processedData = {
       name: coinInfo.name,
@@ -64,8 +64,8 @@ app.get('/api/crypto', async (req, res) => {
   } catch (error) {
     console.error('Error fetching crypto data:', error.message);
     if (error.response) {
-      res.status(error.response.status).json({ 
-        error: error.response.data.status?.error_message || 'Error fetching data from API' 
+      res.status(error.response.status).json({
+        error: error.response.data.status?.error_message || 'Error fetching data from API'
       });
     } else {
       res.status(500).json({ error: 'Internal server error' });
